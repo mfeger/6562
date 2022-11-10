@@ -14,14 +14,14 @@ const char* dgemv_desc = "OpenMP dgemv.";
 
 void my_dgemv(int n, double* A, double* x, double* y) {
 
-   #pragma omp parallel
+   #pragma omp parallel for(i, j)
    {
       int nthreads = omp_get_num_threads();
       int thread_id = omp_get_thread_num();
          for(int i = 0; i < n; i++){
-      for(int j = 0; j < n; j++){
-         y[i] = y[i] + A[j+(i*n)]*x[j];
-      }
+            for(int j = 0; j < n; j++){
+            y[i] = y[i] + A[j+(i*n)]*x[j];
+         }
    }
       //printf("Hello world: thread %d of %d checking in. \n", thread_id, nthreads);
    }
