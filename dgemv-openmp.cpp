@@ -4,7 +4,7 @@
 #include <omp.h>
 
 const char* dgemv_desc = "OpenMP dgemv.";
-
+ 
 /*
  * This routine performs a dgemv operation
  * Y :=  A * X + Y
@@ -14,13 +14,13 @@ const char* dgemv_desc = "OpenMP dgemv.";
 
 void my_dgemv(int n, double* A, double* x, double* y) {
 
-   #pragma omp parallel for private(i, j)
+   #pragma omp parallel for reduction(+:y)
    {
-      int nthreads = omp_get_num_threads();
-      int thread_id = omp_get_thread_num();
+      //int nthreads = omp_get_num_threads();
+      //int thread_id = omp_get_thread_num();
          for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
-            y[i] = y[i] + A[j+(i*n)]*x[j];
+            y[i] += A[j+(i*n)]*x[j];
          }
    }
       //printf("Hello world: thread %d of %d checking in. \n", thread_id, nthreads);
