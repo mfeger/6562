@@ -17,11 +17,11 @@ void my_dgemv(int n, double* A, double* x, double* y) {
    #pragma omp parallel for reduction(+:sum)
          for(int i = 0; i < n; i++){
             int row_offset = i*n;
-            sum = y[i];
+            sum = 0.0;
             for(int j = 0; j < n; j++){
                sum += A[j+row_offset]*x[j];
             }
-            y[i] = sum;
+            y[i] += sum;
    }
 
 }
